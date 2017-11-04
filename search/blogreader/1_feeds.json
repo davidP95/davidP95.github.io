@@ -1,0 +1,41 @@
+{
+    "feeds": [
+        {
+            "aspect_id": 1,
+            "created_at": 1456246272.0,
+            "domain_id": 1,
+            "favicon": "https://everettjf.github.io/favicon.ico",
+            "feed_url": "http://sxmaug.com/search/blogreader/cp.xml",
+            "id": 3,
+            "name": "最新新闻",
+            "spider": "",
+            "url": "http://rss.cnfol.com/",
+            "zindex": 0
+        },
+        {
+            "aspect_id": 1,
+            "created_at": 1456246548.0,
+            "domain_id": 1,
+            "favicon": "https://everettjf.github.io/favicon.ico",
+            "feed_url": "http://sxmaug.com/search/blogreader/1764.xml",
+            "id": 5,
+            "name": "预测",
+            "spider": "",
+            "url": "http://sports.163.com/",
+            "zindex": 0
+        },
+        {
+            "aspect_id": 1,
+            "created_at": 1456246385.0,
+            "domain_id": 1,
+            "favicon": "https://everettjf.github.io/favicon.ico",
+            "feed_url": "http://sxmaug.com/search/blogreader/1765.xml",
+            "id": 4,
+            "name": "中奖故事",
+            "spider": "",
+            "url": "http://www.78500.cn/",
+            "zindex": 0
+        }
+
+    ]
+}
