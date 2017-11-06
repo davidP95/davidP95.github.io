@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Foresight Group Japan G.K.</title>
+	<atom:link href="http://www.foresightgroup.com/j/feed/" rel="self" type="application/rss+xml" />
+	<link>http://www.foresightgroup.com/j</link>
+	<description>Just another WordPress site</description>
+	<lastBuildDate>Tue, 02 May 2017 01:49:03 +0000</lastBuildDate>
+	<language>ja</language>
+		<sy:updatePeriod>hourly</sy:updatePeriod>
+		<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.org/?v=3.7.23</generator>
+	<item>
+		<title>Argus User Seminar by Foresight開催のお知らせ～5月23日（金）～</title>
+		<link>http://www.foresightgroup.com/j/argus-user-seminar-by-foresight%e9%96%8b%e5%82%ac%e3%81%ae%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b%ef%bd%9e5%e6%9c%8823%e6%97%a5%ef%bc%88%e9%87%91%ef%bc%89%ef%bd%9e/346/</link>
+		<comments>http://www.foresightgroup.com/j/argus-user-seminar-by-foresight%e9%96%8b%e5%82%ac%e3%81%ae%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b%ef%bd%9e5%e6%9c%8823%e6%97%a5%ef%bc%88%e9%87%91%ef%bc%89%ef%bd%9e/346/#comments</comments>
+		<pubDate>Tue, 18 Mar 2014 02:19:04 +0000</pubDate>
+		<dc:creator><![CDATA[msenda]]></dc:creator>
+				<category><![CDATA[イベント]]></category>
+
+		<guid isPermaLink="false">http://www.foresightgroup.com/j/?p=346</guid>
+		<description><![CDATA[2014年2月スイス・バーゼルにおきまして、Foresight Groupとノバ &#8230; <a href="http://www.foresightgroup.com/j/argus-user-seminar-by-foresight%e9%96%8b%e5%82%ac%e3%81%ae%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b%ef%bd%9e5%e6%9c%8823%e6%97%a5%ef%bc%88%e9%87%91%ef%bc%89%ef%bd%9e/346/">続きを読む <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>2014年2月スイス・バーゼルにおきまして、Foresight Groupとノバルティス社様で共同開催いたしましたArgus User Group Meetingを<strong>5月23日（金）</strong>に東京都内で開催することが決定致しました。<br />
+<strong>Argus User Seminar by Foresight</strong>と題し、弊社グローバル・エキスパート数名を招きセミナー等を予定しております。<br />
+詳しい時間や内容につきましては随時公開致します。<br />
+皆様のご参加を心よりお待ちしております。</p>
+]]></content:encoded>
+			<wfw:commentRss>http://www.foresightgroup.com/j/argus-user-seminar-by-foresight%e9%96%8b%e5%82%ac%e3%81%ae%e3%81%8a%e7%9f%a5%e3%82%89%e3%81%9b%ef%bd%9e5%e6%9c%8823%e6%97%a5%ef%bc%88%e9%87%91%ef%bc%89%ef%bd%9e/346/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Completed AERS Data Migration &amp; Multi-tenant Argus for CRO</title>
+		<link>http://www.foresightgroup.com/j/completed-aers-data-migration-multi-tenant-argus-for-cro/382/</link>
+		<comments>http://www.foresightgroup.com/j/completed-aers-data-migration-multi-tenant-argus-for-cro/382/#comments</comments>
+		<pubDate>Sat, 15 Mar 2014 01:52:52 +0000</pubDate>
+		<dc:creator><![CDATA[msenda]]></dc:creator>
+				<category><![CDATA[ニュース]]></category>
+
+		<guid isPermaLink="false">http://www.foresightgroup.com/j/?p=382</guid>
+		<description><![CDATA[March 2014.  Foresight is proud to annou &#8230; <a href="http://www.foresightgroup.com/j/completed-aers-data-migration-multi-tenant-argus-for-cro/382/">続きを読む <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>March 2014.  Foresight is proud to announce the completion of a two phased project to migrate multiple instances of Oracle AERS into a multi-tenant version of Argus 7 for a large global CRO.  Foresight assisted first with the creation of the multi-tenant instance of Argus 7 and then with the migration of multiple instances of Oracle AERS into the new multi-tenant instance or Argus Safety<sup>TM</sup>.</p>
+<p>Foresight has now completed multiple implementations of the multi-tenant version of Argus Safety<sup>TM</sup> on behalf of large and midsized CROs.  In addition, Foresight routinely performs data migrations on behalf of CROs for new sponsors or existing ones that acquire additional products or studies.</p>
+]]></content:encoded>
+			<wfw:commentRss>http://www.foresightgroup.com/j/completed-aers-data-migration-multi-tenant-argus-for-cro/382/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+		</item>
+		<item>
+		<title>Hello world!</title>
+		<link>http://www.foresightgroup.com/j/hello-world/1/</link>
+		<comments>http://www.foresightgroup.com/j/hello-world/1/#comments</comments>
+		<pubDate>Mon, 02 Dec 2013 02:14:49 +0000</pubDate>
+		<dc:creator><![CDATA[msenda]]></dc:creator>
+				<category><![CDATA[未分類]]></category>
+
+		<guid isPermaLink="false">http://www.foresightgroup.com/wpj/?p=1</guid>
+		<description><![CDATA[WordPress へようこそ。これは最初の投稿です。編集もしくは削除してブログ &#8230; <a href="http://www.foresightgroup.com/j/hello-world/1/">続きを読む <span class="meta-nav">&#8594;</span></a>]]></description>
+				<content:encoded><![CDATA[<p>WordPress へようこそ。これは最初の投稿です。編集もしくは削除してブログを始めてください !</p>
+]]></content:encoded>
+			<wfw:commentRss>http://www.foresightgroup.com/j/hello-world/1/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+		</item>
+	</channel>
+</rss>

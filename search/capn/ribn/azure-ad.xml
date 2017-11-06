@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>Azure AD &#8211;</title>
+	<atom:link href="https://blogs.technet.microsoft.com/office365-tech-japan/category/azure-ad/feed/" rel="self" type="application/rss+xml" />
+	<link>https://blogs.technet.microsoft.com/office365-tech-japan</link>
+	<description>日本マイクロソフト Office 365 テクニカル セールス チームのブログです。</description>
+	<lastBuildDate>Wed, 01 Nov 2017 02:36:00 +0000</lastBuildDate>
+	<language>ja</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	
+	<item>
+		<title>&#8220;シームレス SSO&#8221; と &#8220;パススルー認証&#8221; の一般提供開始</title>
+		<link>https://blogs.technet.microsoft.com/office365-tech-japan/2017/10/31/aadc-sso-and-passthrough-auth-ga/</link>
+		<pubDate>Tue, 31 Oct 2017 08:21:16 +0000</pubDate>
+		<dc:creator><![CDATA[Office 365 Technical Sales Team Japan]]></dc:creator>
+				<category><![CDATA[Azure AD]]></category>
+		<category><![CDATA[AAD Connect]]></category>
+		<category><![CDATA[Passthrough]]></category>
+		<category><![CDATA[SSO]]></category>
+
+		<guid isPermaLink="false">https://blogs.technet.microsoft.com/office365-tech-japan/?p=1517</guid>
+		<description><![CDATA[こんにちは、コラボレーション担当の和田です。 以前のブログで、まだパブリック プレビューの段階ではありましたが、Azure AD Connect を使用した新しいシングル サインオンとユーザー認証、アクセス制御の方法をご紹介しました。 &#160; TITLE: Azure AD Connect のシングル サインオン &#38; パススルー認証 (プレビュー) によるクラウド完結のユーザー認証インフラの実現 URL: https://blogs.technet.microsoft.com/office365-tech-japan/2017/03/08/aadconnect-sso-and-pass-through-authentication/ &#160; 先月 US で開催された Microsoft Ignite 2017 で正式にアナウンスされ、Azure AD Connect のシームレス SSO 機能と、パススルー認証機能がようやく一般提供開始 (GA) されました。これにより、いよいよクラウド完結によるユーザー認証基盤の実現が進んでいきます。一般的に求められるであろうシングル サインオン要件とアクセス制御要件については、Azure AD Connect + EMS (Azure AD Premium, Intune) で実現できるようになりましたので、今後はこの構成に集約されていくと思います。シームレス SSO とパススルー認証は無償の機能ですので、別途 Azure AD の有償エディション ライセンスは必要ありません。 ここでは、現時点での制約事項と、複数用意されている Office 365 の...]]></description>
+				<content:encoded><![CDATA[<p>こんにちは、コラボレーション担当の和田です。</p>
+<p>以前のブログで、まだパブリック プレビューの段階ではありましたが、Azure AD Connect を使用した新しいシングル サインオンとユーザー認証、アクセス制御の方法をご紹介しました。</p>
+<p>&nbsp;</p>
+<p style="padding-left: 30px">TITLE: Azure AD Connect のシングル サインオン &amp; パススルー認証 (プレビュー) によるクラウド完結のユーザー認証インフラの実現<br />
+URL: <a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/03/08/aadconnect-sso-and-pass-through-authentication/">https://blogs.technet.microsoft.com/office365-tech-japan/2017/03/08/aadconnect-sso-and-pass-through-authentication/</a></p>
+<p>&nbsp;</p>
+<p>先月 US で開催された Microsoft Ignite 2017 で正式にアナウンスされ、Azure AD Connect のシームレス SSO 機能と、パススルー認証機能がようやく一般提供開始 (GA) されました。これにより、いよいよクラウド完結によるユーザー認証基盤の実現が進んでいきます。一般的に求められるであろうシングル サインオン要件とアクセス制御要件については、<strong>Azure AD Connect + EMS (Azure AD Premium, Intune)</strong> で実現できるようになりましたので、今後はこの構成に集約されていくと思います。シームレス SSO とパススルー認証は無償の機能ですので、別途 Azure AD の有償エディション ライセンスは必要ありません。</p>
+<p>ここでは、現時点での制約事項と、複数用意されている Office 365 の ID 管理オプションの中から、どういったご要件の場合にどの構成を選択するのが良いのか、構成案を交えて解説したいと思います。</p>
+<p>&nbsp;</p>
+<h3>技術要件/現時点での制限事項</h3>
+<h4>Azure AD Connect</h4>
+<ul>
+<li>10 月 27 日にリリースされたバージョン v1.1.649.0 、またはそれ以降の利用を推奨します</li>
+<li>最新版は以下からダウンロードください<br />
+TITLE: Microsoft Azure Active Directory Connect<br />
+URL: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=47594">https://www.microsoft.com/en-us/download/details.aspx?id=47594</a></li>
+</ul>
+<p>&nbsp;</p>
+<h4>シームレス SSO</h4>
+<ul>
+<li>Office は 2013 以降の ADAL 対応が必須です</li>
+<li>Microsoft Edge、Firefox のプライベート ブラウズ モード、拡張保護モードがオンの Internet Explorer では動作がサポートされていません</li>
+<li>iOS および Android のモバイル ブラウザーでは動作しません (ユーザー名とパスワードの入力が必要です)</li>
+<li>30 以上の AD フォレストを同期している場合は、Azure AD Connect ウィザード内では有効化することができませんので、手動による有効化が必要です</li>
+<li>Azure AD サービスの URL ( https://autologon.microsoftazuread-sso.com , https://aadg.windows.net.nsatc.net ) を "ローカル イントラネット" ゾーンではなく "信頼済みサイト" ゾーンに追加すると、ユーザーのサインインがブロックされます。必ず  "ローカル イントラネット" ゾーンに追加してください</li>
+</ul>
+<p>&nbsp;</p>
+<h4>パススルー認証</h4>
+<ul>
+<li>Office は 2013 以降の ADAL 対応が必須です</li>
+<li>Skype for Business クライアント アプリケーション (Skype for Business 2016 含む) のサインインはサポートされません。パススルー認証の追加オプションとして、パスワード ハッシュ同期も併せて有効化してください。こうすることでサポートされないシナリオのフォールバックとしてのみパスワード ハッシュを使用することができます。<br />
+TITLE: Azure Active Directory パススルー認証: 現在の制限事項<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-pass-through-authentication-current-limitations">https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-pass-through-authentication-current-limitations</a></li>
+</ul>
+<p>&nbsp;</p>
+<h3>Office 365 における ID 管理オプション</h3>
+<p>Azure AD でご用意している ID 管理オプションは、「クラウドID」、「同期ID」、「フェデレーションID」 の 3 つです。今までの同期 ID では、シングル サインオンができないこと、ディレクトリ同期のみではアクセス制御が行えないこと、ユーザー認証をオンプレミス内に閉じれないことなどが主な課題点でした。今回の Azure AD、及び Azure AD Connect のアップデートでそれらが解消され、一般的なご要件を満たしつつより柔軟で展開が容易な管理オプションが追加されたことになります。</p>
+<h4></h4>
+<p>&nbsp;</p>
+<h4>新しい ID の管理と運用</h4>
+<p><img width="800" height="403" class="alignnone wp-image-1525" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-1-1024x516.png" /></p>
+<p>&nbsp;</p>
+<h3>ご要件に応じた適切な構成の選択</h3>
+<p>以下のようなアクセス要件については、AD FS を構築・運用せずに、クラウド完結で実現可能です。</p>
+<h4></h4>
+<h4>Azure AD Connect と Azure AD Premium のみで対応できる主な要件</h4>
+<ul>
+<li>シングル サインオンを行いたい</li>
+<li>IP アドレスによるアクセス制限を行いたい</li>
+<li>認めたデバイスのみアクセスを許可したい</li>
+<li>ワークロードごとに制御を変えたい (メールは外部アクセス可能、それ以外は不可 など)</li>
+<li>ユーザー認証を強化するために、多要素認証を実装したい。但し、社内 IP からはバイパスしたい</li>
+</ul>
+<p>&nbsp;</p>
+<p>以下のようなご要件の場合には AD FS によるフェデレーション ID 構成が必要になります。</p>
+<h4>ADFS が必須な主な要件</h4>
+<ul>
+<li>Windows Hello for Business と連携したい</li>
+<li>Azure AD に対応していないオンプレミス アプリケーションをフェデレーションしたい</li>
+<li>SmartCard 認証のみに限定したい</li>
+<li>アプリケーション毎にサインイン ページをカスタマイズ (ブランディング) したい</li>
+</ul>
+<p>&nbsp;</p>
+<h3></h3>
+<h3>代表的なアクセス制御要件への対処</h3>
+<p>以下のようなご要件がある場合、今までは AD FS やサードパーティーが必須と考えられていましたが、これからは Azure AD で対応が可能となります。</p>
+<h4></h4>
+<p>&nbsp;</p>
+<h4>1. 会社支給の認められたデバイスからのみアクセスを許可したい</h4>
+<p>iOS や Android などのモバイル デバイスについては Intune のデバイス登録を使用することで簡単に制御できていました。問題は Windows PC でした。AD FS でクライアント証明書認証を行う手もあるのですが、アプリによっては対応していない場合も多かったです。一番スマートな方法は、Azure AD の条件付きアクセスで 「ドメイン参加済みであることが必要 (ハイブリッド Azure AD)」 ルールを使用して、オンプレミス AD ドメインに参加していることを条件にする方法ですが、Windows 10 以外の OS は AD FS 連携が必須でした。<br />
+シームレス SSO を使用すればこの制限事項を解消することができますので、AD FS なしで Azure AD Connect と Azure AD Premium でこの要件を実現することができます。</p>
+<p style="padding-left: 30px">TITLE: ハイブリッド Azure Active Directory 参加済みデバイスの構成方法<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/device-management-hybrid-azuread-joined-devices-setup">https://docs.microsoft.com/ja-jp/azure/active-directory/device-management-hybrid-azuread-joined-devices-setup</a></p>
+<p>Windows 10 以外の PC の場合は、ワークプレイス ジョイン クライアントの v2.1 以降をご利用ください。</p>
+<p style="padding-left: 30px">TITLE: Microsoft Workplace Join for non-Windows 10 computers<br />
+URL: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=53554">https://www.microsoft.com/en-us/download/details.aspx?id=53554</a></p>
+<p>&nbsp;</p>
+<h4></h4>
+<h4>2. 会社や指定した拠点のネットワークからのみアクセスを許可したい</h4>
+<p>Azure AD Premium の条件付きアクセスの機能で、場所（IPアドレス）を指定して許可できますが、これは ADAL 認証が前提になっていますので、レガシー認証を使用するアプリは制御することが出来ません。従って、完全なブロックを行う場合は AD FS が必要でしたが、多要素認証 (Azure MFA) を併用することでレガシー認証をブロックすることができます。MFA はあくまでもレガシー認証をブロックするためだけに使用するので、社内ネットワークからアクセスする際には MFA をバイパス設定し、エンド ユーザーには意識させずにご利用可能です。</p>
+<p>&nbsp;</p>
+<p>① Azure MFA をユーザー単位で適用します</p>
+<p><img width="695" height="396" class="alignnone wp-image-1527" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-3-1024x584.png" /></p>
+<p>② アプリケーション パスワードの無効化と、信頼済み IP の設定を行います</p>
+<p><img width="399" height="600" class="alignnone wp-image-1526" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-2-680x1024.png" /></p>
+<p>&nbsp;</p>
+<p>③ 条件付きアクセス ポリシーでアクセス ブロックの対象から信頼済み IP を除外します</p>
+<p><img width="695" height="416" class="alignnone wp-image-1535" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-4-1024x614.png" /></p>
+<p><img width="695" height="600" class="alignnone wp-image-1545" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-5.png" /></p>
+<p>&nbsp;</p>
+<p>このように構成することで、懸念となっていた外部からのレガシー認証を完全にブロックし、社内からは MFA をバイパスし、シングル サインオンで利用する環境が実現されます。</p>
+<p><img width="527" height="533" class="alignnone size-full wp-image-1546" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-6.png" /></p>
+<p>&nbsp;</p>
+<p>初回アクセス時の電話番号の登録処理をエンド ユーザーに行わせたくない場合には、各ユーザーの mobilePhone 属性に、事前に管理者の方でバルク登録しておけばそのステップはスキップさせることができますので、エンド ユーザーに初回アクセス時にも余計な負荷をかけたくないといった展開も可能です。尚、今後は Azure AD でレガシー認証をブロックする機能が実装される予定ですので、その際は改めてアップデートさせて頂きます。</p>
+<p>&nbsp;</p>
+<h4>3. シングルテナントで AD FS と シームレス SSO + パススルー認証 を併用したい</h4>
+<p>規模の大きい本社組織は現在のまま AD FS フェデレーション ID を利用しつつ、ユーザー数の少ない拠点や、今後 M&amp;A 等で統合する海外拠点等は、運用負荷を軽減するためにシームレス SSO を使用したい、と言ったように、同じテナント内で拠点によって ID 管理・認証方式を分けたい場合があると思います。Office 365 (Azure AD) では、ドメイン名毎に認証方式を構成できますので、もしも海外拠点は別のメール ドメイン (UPN) を使用している場合には、その拠点はシームレス SSO で簡易展開する、今後追加される組織はシームレス SSO とする、というような運用は可能です。</p>
+<p><img width="547" height="555" class="alignnone size-full wp-image-1555" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/10/15-7.png" /></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Outlook のレガシー認証ブロック (テナント制限に関連する ADAL 認証の強制)</title>
+		<link>https://blogs.technet.microsoft.com/office365-tech-japan/2017/09/26/block_legacy_auth_with_tenant_restriction/</link>
+		<pubDate>Tue, 26 Sep 2017 08:34:48 +0000</pubDate>
+		<dc:creator><![CDATA[Office 365 Technical Sales Team Japan]]></dc:creator>
+				<category><![CDATA[Azure AD]]></category>
+		<category><![CDATA[Network]]></category>
+		<category><![CDATA[Outlook]]></category>
+		<category><![CDATA[Security]]></category>
+
+		<guid isPermaLink="false">https://blogs.technet.microsoft.com/office365-tech-japan/?p=1455</guid>
+		<description><![CDATA[こんにちは、コラボレーション担当の和田です。 以前のブログで、フォワード プロキシ サーバーと Azure AD を使用した、自社テナント以外へのアクセス制限をご紹介しました。 &#160; TITLE: 自社テナント以外へのアクセス制御 – “テナントの制限” 機能 (Tenant Restrictions) URL: https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/ &#160; この機能は、現在のところ、ブラウザーでは完全に機能しますが、Outlook と Skype のリッチ クライアント アプリではレガシー認証が利用可能であり、ADAL が無効なテナントに接続しようとすると ADAL 認証を迂回してしまうため、完全には制御できませんでした。Outlook の場合は、既定以外の Exchange アカウントの追加を禁止したり、自社テナント以外の自動検出（Autodiscover）URL へのアクセスをブロックするなどの対処が必要でした。 &#160; ※ 2017 年 9 月現在、新規に作成されるテナントについては、Exchange Online 及び Skype for Business Online も既定で ADAL が有効になるように変更されています &#160; 概要 これに対応するため、Outlook 2016 にオプション機能が追加され、レジストリ キーで ADAL 認証を強制できるようになりました。このレジストリ キーが構成された...]]></description>
+				<content:encoded><![CDATA[<p>こんにちは、コラボレーション担当の和田です。</p>
+<p>以前のブログで、フォワード プロキシ サーバーと Azure AD を使用した、自社テナント以外へのアクセス制限をご紹介しました。</p>
+<p>&nbsp;</p>
+<p style="padding-left: 30px">TITLE: 自社テナント以外へのアクセス制御 – “テナントの制限” 機能 (Tenant Restrictions)<br />
+URL: <a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/">https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/</a></p>
+<p>&nbsp;</p>
+<p>この機能は、現在のところ、ブラウザーでは完全に機能しますが、Outlook と Skype のリッチ クライアント アプリではレガシー認証が利用可能であり、ADAL が無効なテナントに接続しようとすると ADAL 認証を迂回してしまうため、完全には制御できませんでした。Outlook の場合は、既定以外の Exchange アカウントの追加を禁止したり、自社テナント以外の自動検出（Autodiscover）URL へのアクセスをブロックするなどの対処が必要でした。</p>
+<p>&nbsp;</p>
+<p><img width="1024" height="477" class="alignnone size-large wp-image-1486" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/09/Legacy001-1024x477.jpg" /></p>
+<p>※ 2017 年 9 月現在、新規に作成されるテナントについては、Exchange Online 及び Skype for Business Online も既定で ADAL が有効になるように変更されています</p>
+<p>&nbsp;</p>
+<h3><strong>概要</strong></h3>
+<p>これに対応するため、Outlook 2016 にオプション機能が追加され、レジストリ キーで ADAL 認証を強制できるようになりました。このレジストリ キーが構成された Outlook では、Exchange Online に接続する際に ADAL 認証のみが利用されるようになるため、必ず Azure AD のテナント制限の対象に含めることができ、ブラウザーに加えて Outlook も完全制御できるようになります。Outlook プロファイル作成時や Outlook 起動時に、接続先のテナントが ADAL 無効になっている場合は、レガシー認証のポップアップは引き続き表示されますが、ユーザー名・パスワードを入力して認証が完了しても、Outlook からはメールボックスにはアクセスできないように制御されます。</p>
+<p>&nbsp;</p>
+<p><img width="500" height="392" class="alignnone wp-image-1496" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/09/004_2_2-1024x803.png" /></p>
+<p>&nbsp;</p>
+<h5><strong>＜新規 Outlook プロファイルで別テナントにアクセスしようとした場合＞</strong></h5>
+<p>オンライン モードでアクセスした場合や、新規プロファイルでアクセスしようとした場合（OST ファイルが生成されていない）は、Outlook は起動せずエラーで停止します。</p>
+<p>&nbsp;</p>
+<p><img width="500" height="365" class="alignnone wp-image-1495" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/09/001_2-1024x748.png" /></p>
+<p>&nbsp;</p>
+<h5><strong>＜Outlook プロファイルが既にありキャッシュが存在する場合＞</strong></h5>
+<p>キャッシュ モードで既に OST ファイルが生成されている場合は、Outlook は起動しますが、接続状態が [切断] となり、メールボックスへはアクセスできません。</p>
+<p>&nbsp;</p>
+<p><img width="750" height="103" class="alignnone wp-image-1485" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/09/005_2-1024x141.png" /></p>
+<p>&nbsp;</p>
+<p>Outlook で他社テナントに接続するためには、接続先のテナントで ADAL を有効にする必要があり、ADAL を有効にした場合は Azure AD のテナント制限の対象とすることができますので、本レジストリ キーとテナント制限の組合せにより、Outlook クライアントでも完全に制御ができるようになります。</p>
+<p>&nbsp;</p>
+<h3><strong>構成方法</strong></h3>
+<p>本機能を利用するためには、Outlook 2016 が最新の状態であることと、レジストリ キーが追加されていることが条件となります。Outlook 2013 以前ではご利用になれません。</p>
+<p>&nbsp;</p>
+<p>最新版の Outlook 2016 がインストールされた PC に対して、以下のレジストリ キーを追加します。</p>
+<p>&nbsp;</p>
+<p style="padding-left: 30px">キー:  HKEY_CURRENT_USER\Software\Policies\Microsoft\Office\16.0\Outlook\HTTP<br />
+名前:  RequireADAL<br />
+種類:  DWORD 値<br />
+値:  1</p>
+<p>&nbsp;</p>
+<p>[Microsoft] 以下のキー [Office\16.0\Outlook\HTTP] は、既定では存在していない場合がありますので、その場合は新規作成してください。</p>
+<p>&nbsp;</p>
+<p><img width="500" height="365" class="alignnone wp-image-1465" alt="" src="https://msdnshared.blob.core.windows.net/media/2017/09/002-1024x747.png" /></p>
+<p style="padding-left: 30px">TITLE: Outlook 2016 が ADAL を使用しない場合は、Exchange アカウントに接続することを防止するためのオプションを追加します。<br />
+URL: <a href="https://support.microsoft.com/ja-jp/help/4011124/adds-an-option-to-prevent-outlook-2016-from-connecting-to-an-exchange">https://support.microsoft.com/ja-jp/help/4011124/adds-an-option-to-prevent-outlook-2016-from-connecting-to-an-exchange</a></p>
+<p>&nbsp;</p>
+<p>Office 365 ProPlus の Outlook 2016 をお使いの場合は、2017 年 10 月 3 日にリリースされた 月次チャネル (Monthly Channel) の バージョン 1708 (Build 8431.2094) 以降をご利用頂く必要があります。</p>
+<p style="padding-left: 30px">TITLE: Version and build numbers of update channel releases<br />
+URL: <a href="https://support.office.com/en-us/article/ae942449-1fca-4484-898b-a933ea23def7">https://support.office.com/en-us/article/ae942449-1fca-4484-898b-a933ea23def7</a></p>
+<p>&nbsp;</p>
+<p>MSI 形式の Outlook 2016 の場合は、2017 年 9 月 12 日の更新プログラム (KB4011091) が適用されている必要があります。</p>
+<p style="padding-left: 30px">TITLE: Outlook 2016 セキュリティ更新プログラムについて2017 年 9 月 12 日<br />
+URL: <a href="https://support.microsoft.com/ja-jp/help/4011091/descriptionofthesecurityupdateforoutlook2016september12-2017">https://support.microsoft.com/ja-jp/help/4011091/descriptionofthesecurityupdateforoutlook2016september12-2017</a></p>
+<p>&nbsp;</p>
+<p>Skype for Business クライアントについては、現在のところレジストリ キーの提供予定はありませんので、プロキシによる SOAP リクエストのユーザー名解析等をご検討ください。</p>
+<p>なお、Microsoft Teams では、すべてのユーザー認証が ADAL となっており、レガシー認証は存在しませんので、標準で Azure AD のテナント制限の対象とすることができます。これから新たにコミュニケーション ツールをご検討される場合には Microsoft Teams を是非ご利用ください。</p>
+<p>&nbsp;</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Azure AD Connect のシングル サインオン &#038; パススルー認証 (プレビュー) によるクラウド完結のユーザー認証インフラの実現</title>
+		<link>https://blogs.technet.microsoft.com/office365-tech-japan/2017/03/08/aadconnect-sso-and-pass-through-authentication/</link>
+		<pubDate>Wed, 08 Mar 2017 05:00:46 +0000</pubDate>
+		<dc:creator><![CDATA[Office 365 Technical Sales Team Japan]]></dc:creator>
+				<category><![CDATA[Azure AD]]></category>
+		<category><![CDATA[AAD Connect]]></category>
+		<category><![CDATA[Passthrough]]></category>
+		<category><![CDATA[SSO]]></category>
+
+		<guid isPermaLink="false">https://blogs.technet.microsoft.com/office365-tech-japan/?p=555</guid>
+		<description><![CDATA[こんにちは、プロダクティビティ担当の和田です。 必要なのはわかってはいるのですが、AD FS サーバーの運用って、大変ですよね？ ユーザーにシングル サインオン環境は提供したいが、せっかくクラウドを使用するのに、新規サーバーを構築して、かつ公的証明書などを含むサーバー運用が増えてしまうことは、出来れば避けたいという方が多いのではないかと思います。クラウド側に問題がなくても、AD FS サーバーに問題があると、全てのユーザーがクラウド アプリに接続できなくなってしまうので、重要な基盤です。ユーザー認証基盤は、クラウド アプリ利用とセキュリティー対策の根幹に関わるところですので、エンド ユーザーにはあまり意識されない部分ですが、システム全体をデザイン・運用していく上での最重要ポイントのひとつと言ってよいと思います。 今後は、より安全により簡単に、その運用負荷を軽減できるようになる予定です。 これを実現していくのが、現在パブリック プレビュー中の Azure AD Connect の新しい機能である、Azure AD シングル サインオン (SSO) 機能と、Azure AD パススルー認証機能です。 Azure AD SSO ＋ パススルー認証は、簡単に言ってしまうと、AD FS サーバーを構築せずとも、Azure AD Connect ディレクトリ同期サーバーのみで、オンプレミスの Active Directory ドメインに参加している PC に対して SSO を提供できる、待望の機能です。 今までのパスワード ハッシュ同期でも、初回のサインイン時にブラウザーや Office でパスワードを保存して「サインインしたままにする」にチェックを入れれば、次回以降はパスワード有効期限までの間は、簡易 SSO (シングル ID ・シングルパスワード) として使用できていましたが、この Azure AD SSO ＋...]]></description>
+				<content:encoded><![CDATA[<p>こんにちは、プロダクティビティ担当の和田です。<br />
+必要なのはわかってはいるのですが、AD FS サーバーの運用って、大変ですよね？</p>
+<p>ユーザーにシングル サインオン環境は提供したいが、せっかくクラウドを使用するのに、新規サーバーを構築して、かつ公的証明書などを含むサーバー運用が増えてしまうことは、出来れば避けたいという方が多いのではないかと思います。クラウド側に問題がなくても、AD FS サーバーに問題があると、全てのユーザーがクラウド アプリに接続できなくなってしまうので、重要な基盤です。ユーザー認証基盤は、クラウド アプリ利用とセキュリティー対策の根幹に関わるところですので、エンド ユーザーにはあまり意識されない部分ですが、システム全体をデザイン・運用していく上での最重要ポイントのひとつと言ってよいと思います。</p>
+<p>今後は、より安全により簡単に、その運用負荷を軽減できるようになる予定です。<br />
+これを実現していくのが、現在パブリック プレビュー中の Azure AD Connect の新しい機能である、<strong>Azure AD シングル サインオン (SSO)</strong> 機能と、<strong>Azure AD パススルー認証</strong>機能です。</p>
+<p>Azure AD SSO ＋ パススルー認証は、簡単に言ってしまうと、AD FS サーバーを構築せずとも、Azure AD Connect ディレクトリ同期サーバーのみで、オンプレミスの Active Directory ドメインに参加している PC に対して SSO を提供できる、待望の機能です。<br />
+今までのパスワード ハッシュ同期でも、初回のサインイン時にブラウザーや Office でパスワードを保存して「サインインしたままにする」にチェックを入れれば、次回以降はパスワード有効期限までの間は、簡易 SSO (シングル ID ・シングルパスワード) として使用できていましたが、この Azure AD SSO ＋ パススルー認証を使用すると、パスワードを入力する必要がなくなり、クラウド上にパスワードを同期する必要もありませんので、真の SSO 環境を提供できます。</p>
+<p>&nbsp;</p>
+<p><strong>シングルサインオンの動作イメージ</strong><br />
+Azure AD Connect で SSO を有効化すると、このようなイメージでユーザー エクスペリエンスを実装できます。AD FS によるフェデレーションの場合、サインインのリダイレクト処理が入りますが、SSO の場合はリダイレクトによる画面推移は行われず、ユーザー名を入力するだけでそのままサインイン完了できます。</p>
+<p>&nbsp;</p>
+<p><strong>&lt;ドメイン参加した PC で社内 LAN からアクセスする場合&gt;</strong></p>
+<p><div style="width: 1024px;" class="wp-video"><!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->
+<video class="wp-video-shortcode" id="video-555-1" width="1024" height="768" poster="https://msdnshared.blob.core.windows.net/media/2017/03/mediaposter1.png" preload="metadata" controls="controls"><source type="video/mp4" src="https://msdnshared.blob.core.windows.net/media/2017/03/media1_x264.mp4?_=1" /><a href="https://msdnshared.blob.core.windows.net/media/2017/03/media1_x264.mp4">https://msdnshared.blob.core.windows.net/media/2017/03/media1_x264.mp4</a></video></div></p>
+<p>&nbsp;</p>
+<p><strong>&lt;社外からアクセスする場合&gt;</strong></p>
+<p><div style="width: 1024px;" class="wp-video"><video class="wp-video-shortcode" id="video-555-2" width="1024" height="768" poster="https://msdnshared.blob.core.windows.net/media/2017/03/mediaposter2.png" preload="metadata" controls="controls"><source type="video/mp4" src="https://msdnshared.blob.core.windows.net/media/2017/03/media2_x264.mp4?_=2" /><a href="https://msdnshared.blob.core.windows.net/media/2017/03/media2_x264.mp4">https://msdnshared.blob.core.windows.net/media/2017/03/media2_x264.mp4</a></video></div></p>
+<p>&nbsp;</p>
+<p><strong>Azure AD シングル サインオン機能の概要</strong></p>
+<p>SSO は、Azure AD Connect の新しいオプション機能で、パスワード同期またはパススルー認証と組合わせて使用することができます。サポートされている条件、およびクライアント環境は以下の通りです。先進認証（Modern Authentication/ADAL）を使用できることが前提となります。</p>
+<p><strong>&lt;環境要件&gt;</strong></p>
+<ul>
+<li>ドメインに参加したコンピューターを利用している</li>
+<li>企業のワイヤードまたはワイヤレス ネットワーク上や、VPN 接続などのリモート アクセス接続経由で、ドメイン コントローラーに直接接続している</li>
+<li>ブラウザーのイントラネット ゾーンの一部としてクラウドに Kerberos エンドポイントを定義している</li>
+</ul>
+<p><strong>&lt;サポートされているクライアント&gt;</strong></p>
+<ul>
+<li>OS : Windows 7, Windows 8, Windows 8.1, Windows 10</li>
+<li>ブラウザー : Internet Explorer, Chrome, Firefox</li>
+<li>Office : Office 2013, Office 2016 (ADAL 有効化)</li>
+</ul>
+<p>Azure AD Connect で SSO を有効にすると、オンプレミス Active Directory で AZUREADSSOACCT という名前のコンピューター アカウントが作成され、Kerberos の復号化キーが Azure AD と安全に共有されます。 さらに、クライアントと Azure AD の認証時に使用される、クラウド URL を表す 2 つの Kerberos サービス プリンシパル名 (SPN) が作成されます。この設定が完了すると、統合 Windows 認証ベースのアプリケーションと同じ方法で認証が行われるようになり、SSO を実現しています。何かしらの理由により SSO が失敗した場合や、社外や WORKGROUP 環境からアクセスする場合などは、通常通りサインイン ページでパスワードを入力することでサインインできます。</p>
+<p>詳細な前提条件や具体的な構成手順については、以下の技術情報を参照してください。</p>
+<p>Title:  シングル サインオン (SSO) とは (プレビュー)<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-sso">https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-sso</a></p>
+<p>&nbsp;</p>
+<p><strong>Azure AD パススルー認証の概要</strong></p>
+<p>パススルー認証は、AD FS サーバーを構成しなくても、シンプルな構成でオンプレミスの Active Directory ドメイン コントローラーに対してユーザー認証 (パスワード検証) を実行できます。複雑なネットワーク インフラを導入したり、クラウドにオンプレミス パスワードが存在したりする必要がなくなります。パススルー認証は Azure AD Connect を使用して構成することができ、パスワードの検証要求をリッスンするシンプルなエージェントで構成されます。エージェントは複数のサーバーにデプロイでき、簡単に高可用性と負荷分散を実現できます。特筆すべき点は、<strong>すべての通信が Out-going (オンプレミス to インターネット) のみ</strong>であるため、AD FS を構成するときのような In-coming の通信の受け入れ許可は必要ありません。DMZ に WAP を構築する必要も、外部公開する必要も、公的な証明書の準備も運用も必要ありません。ネットワーク管理者にとっても、サーバー管理者にとっても、最良なソリューションとなると思います。なお、本機能も、シングルサインオン機能と同様に、先進認証 (Modern Authentication/ADAL) を使用できることが前提となります。</p>
+<p>詳細な前提条件や具体的な構成手順については、以下の技術情報を参照してください。</p>
+<p>Title: Azure AD パススルー認証とは<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-pass-through-authentication">https://docs.microsoft.com/ja-jp/azure/active-directory/connect/active-directory-aadconnect-pass-through-authentication</a></p>
+<p>&nbsp;</p>
+<p><strong>SSO ＋パススルー認証の動作イメージ</strong></p>
+<p>上記 2 つを組合わせると、例えば以下のような認証フローを実現できます。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/?attachment_id=625"><img width="805" height="683" class="alignnone size-full wp-image-625" alt="sso_passthrough_overview" src="https://msdnshared.blob.core.windows.net/media/2017/03/SSO_Passthrough_overview.png" /></a></p>
+<p><strong>&lt;社内ネットワークからの SSO&gt;</strong></p>
+<ol>
+<li>クライアントはユーザー名を提示して認証を開始</li>
+<li>Azure AD は、Kerberos チケットを提供するよう、401 認証エラーを通じてクライアントに要求</li>
+<li>クライアントは、Active Directory へ Azure AD 用のチケットを要求</li>
+<li>Active Directory は、Azure AD Connect によって作成されたコンピューター アカウントを検索し、コンピューター アカウントのシークレットで暗号化された Kerberos チケットをクライアントに返答 (チケットにはコンピューターにサインインしているユーザーの ID が含まれる)</li>
+<li>クライアントは、Active Directory から取得した Kerberos チケットを Azure AD に送信（その後 Azure AD で評価）</li>
+</ol>
+<p><strong>&lt;社外からのパススルー認証&gt;</strong></p>
+<ol>
+<li>クライアントはユーザー名とパスワードを提示して認証を開始</li>
+<li>オンプレミス コネクタがユーザー名とパスワードを取得</li>
+<li>オンプレミス コネクタが Active Directory に対して検証し、ドメイン コントローラーが要求を評価しコネクタに返答</li>
+<li>コネクタから Azure AD に対して返答</li>
+<li>Azure AD が応答を評価し、必要に応じてトークンを発行したり、多要素認証を要求したりしてユーザーに応答</li>
+</ol>
+<p>&nbsp;</p>
+<p><strong>"シングル サインオン" ＋ "パススルー認証" ＋ "Azure AD Premium" で実現する</strong><strong>セキュアでクラウド完結のユーザー認証 ＆ アクセス制御基盤</strong></p>
+<p>現時点ではいくつか制約があるため、残念ながら "AD FS の完全な置き換え" とまではいけないのですが、将来的には「Azure AD シングル サインオン」、「Azure AD パススルー認証」、「Azure AD Premium 条件付きアクセス」の 3 つを使用することで、クラウドのみで一般的に求められるシングル サインオン要件とアクセス制御要件に応えることができるようになると期待できます。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/?attachment_id=635"><img width="661" height="795" class="alignnone size-full wp-image-635" alt="sso_passthrough_overview2" src="https://msdnshared.blob.core.windows.net/media/2017/03/SSO_Passthrough_overview2.png" /></a></p>
+<p>&nbsp;</p>
+<p><strong>&lt;現時点の主な制約&gt;</strong></p>
+<ul>
+<li>先進認証（Modern Authetication/ADAL）への対応が必須であること</li>
+<li>レガシー認証を制御できないこと</li>
+</ul>
+<p>Azure AD Premium の条件付きアクセスに関する詳細な情報は、以下の技術情報を参照してください。</p>
+<p>Title: : Azure Active Directory の条件付きアクセス<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/active-directory-conditional-access">https://docs.microsoft.com/ja-jp/azure/active-directory/active-directory-conditional-access</a></p>
+<p>現時点で明確な本リリース時期はお知らせできないのですが、是非これらのプレビュー機能を検証頂き、今後の認証インフラの計画のひとつに加えて頂ければと思います。</p>
+]]></content:encoded>
+	<enclosure url="https://msdnshared.blob.core.windows.net/media/2017/03/media1_x264.mp4" length="6598906" type="video/mp4" />
+<enclosure url="https://msdnshared.blob.core.windows.net/media/2017/03/media2_x264.mp4" length="4171381" type="video/mp4" />
+		</item>
+		<item>
+		<title>自社テナント以外へのアクセス制御 &#8211; &#8220;テナントの制限&#8221; 機能 (Tenant Restrictions)</title>
+		<link>https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/</link>
+		<pubDate>Mon, 06 Feb 2017 06:09:00 +0000</pubDate>
+		<dc:creator><![CDATA[Office 365 Technical Sales Team Japan]]></dc:creator>
+				<category><![CDATA[Azure AD]]></category>
+		<category><![CDATA[Network]]></category>
+		<category><![CDATA[Security]]></category>
+
+		<guid isPermaLink="false">https://blogs.technet.microsoft.com/office365-tech-japan/?p=435</guid>
+		<description><![CDATA[2017/03/13 : プロキシ サーバーに追加する HTTP ヘッダーの情報を更新いたしました。 こんにちは、プロダクティビティ担当の和田です。 セキュリティ要件が厳しい組織や業界の場合、Office 365 の利用開始を検討する際、Firewall やプロキシ サーバーでアクセス リスト (ACL) の変更を行い、ホワイトリストに Office 365 で使用するドメイン名や URL を追加して、接続許可の対処をしなければならない場合があります。その際、Office 365 で使用される接続先 URL は全世界共通であるため、自社テナントへの接続を許可すると、他社のテナントや社員が個人契約したテナント、試用版で作成した評価テナントなど、すべての Office 365 テナントへ接続が行えるようになってしまうため、一部のお客様ではこれがセキュリティ リスクとして捉えられてしまうケースがありました。 これに対応するため、Azure Active Directory の機能拡張を行い、「テナントの制限」 (Tenant Restrictions) 機能が一般提供開始されました。(昨年の Tech Summit 2016 ではお伝えできませんでしたが、ようやくリリースされました！) この機能を使用すると、組織内 LAN から接続を許可するテナントを制御することができます。テナント制限を実現するには、プロキシ サーバーで以下の 2  つの HTTP ヘッダーを挿入します。 Restrict-Access-To-Tenants Restrict-Access-Context ヘッダーを挿入する パケット・ URL は以下の 3 つのみで...]]></description>
+				<content:encoded><![CDATA[<p><span style="color: #ff0000"><strong>2017/03/13 :</strong></span><br />
+<span style="color: #ff0000"><strong>プロキシ サーバーに追加する HTTP ヘッダーの情報を更新いたしました。</strong></span></p>
+<p>こんにちは、プロダクティビティ担当の和田です。</p>
+<p>セキュリティ要件が厳しい組織や業界の場合、Office 365 の利用開始を検討する際、Firewall やプロキシ サーバーでアクセス リスト (ACL) の変更を行い、ホワイトリストに Office 365 で使用するドメイン名や URL を追加して、接続許可の対処をしなければならない場合があります。その際、Office 365 で使用される接続先 URL は全世界共通であるため、自社テナントへの接続を許可すると、他社のテナントや社員が個人契約したテナント、試用版で作成した評価テナントなど、すべての Office 365 テナントへ接続が行えるようになってしまうため、一部のお客様ではこれがセキュリティ リスクとして捉えられてしまうケースがありました。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestrictions1/"><img width="1017" height="427" class="alignnone size-full wp-image-455" alt="tenantrestrictions1" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestrictions1.png" /></a></p>
+<p>これに対応するため、Azure Active Directory の機能拡張を行い、「テナントの制限」 (Tenant Restrictions) 機能が一般提供開始されました。(昨年の Tech Summit 2016 ではお伝えできませんでしたが、ようやくリリースされました！)</p>
+<p>この機能を使用すると、組織内 LAN から接続を許可するテナントを制御することができます。テナント制限を実現するには、プロキシ サーバーで以下の 2  つの HTTP ヘッダーを挿入します。</p>
+<ul>
+<li>Restrict-Access-To-Tenants</li>
+<li>Restrict-Access-Context</li>
+</ul>
+<p>ヘッダーを挿入する パケット・ URL は以下の 3 つのみで OK です。すべてのパケットを SSL インターセプトする必要はありませんので、プロキシ サーバー負荷を軽減できます。</p>
+<ul>
+<li>login.microsoftonline.com</li>
+<li>login.windows.net</li>
+<li>login.microsoft.com</li>
+</ul>
+<p>"Restrict-Access-To-Tenants" ヘッダーには、複数のテナント名を指定することができます。複数のテナントを指定する場合はカンマで区切ります。</p>
+<p><strong>例) Contoso テナントと Fabrikam テナントのみアクセスを許可したい場合</strong><br />
+Restrict-Access-To-Tenants: contoso.onmicrosoft.com,fabrikam.onmicrosoft.com</p>
+<p>"Restrict-Access-Context" ヘッダーには、Azure AD のディレクトリ ID を 1 つ指定します。このヘッダーで宣言した Azure AD ディレクトリで、テナント制限のログを確認することができるようになります。</p>
+<p><strong>例）テナント制限ポリシーを設定するテナントとして Contoso を宣言する場合</strong><br />
+Restrict-Access-Context: 456ff232-35l2-5h23-b3b3-3236w0826f3d</p>
+<p>ディレクトリ ID は Azure Portal で確認できます。 管理者としてサインインし、[Azure Active Directory] を選択して、[プロパティ] を選択します。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestriction2a/"><img width="400" height="468" class="alignnone wp-image-655" alt="tenantrestriction2a" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestriction2a-256x300.png" /></a></p>
+<p>Azure AD ではこのヘッダーの有無をチェックして、テナント制限を実現しています。本機能は、Office 365 のサブスクリプションをお持ちのお客様であれば、どなたでもご利用できます。<br />
+Office 365 以外の他の SaaS アプリへのアクセスを制御する場合は、Azure AD Premium P1 ライセンスが必要です。</p>
+<p><strong>※ 注意 ※</strong><br />
+本機能は、組織内 LAN (管理されたプロキシ サーバー) からのテナント アクセス制限を行うための機能であり、社外からのアクセスを制限するための機能ではありません。社外からのアクセス制御を行いたい場合には、引き続き AD FS 等によるアクセス制御が必要です。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestriction3a/"><img width="1024" height="592" class="alignnone wp-image-665 size-large" alt="tenantrestriction3a" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestriction3a-1024x592.jpg" /></a></p>
+<p>&nbsp;</p>
+<p>本機能を動作させるための諸条件は以下の通りです。</p>
+<ul>
+<li>SSL インターセプトが行え、指定した URL に対して HTTP ヘッダーを挿入できるプロキシ サーバーがあること (サーバー証明書の実装含む)</li>
+<li>Office 365 テナント及び クライアント ソフトウェアで、Modern Authentication (先進認証/ADAL) が有効になっていること</li>
+<li>すべてのクライアントが本プロキシ サーバー経由で Office 365 に接続されること</li>
+</ul>
+<p>Azure AD 側の設定等は何も必要ありません。既に本機能は有効化されています。制限がかかっている状態で、クライアントが管理外のテナントにアクセスしようとすると、このように表示され、アクセスを禁止することが出来ます。</p>
+<p><img width="1024" height="499" class="alignnone wp-image-475 size-large" alt="tenantrestrictions3" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestrictions3-1024x499.png" /></p>
+<p>"詳細" をクリックするとアクセス元の情報や制限されている理由が表示されます。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestriction3a-2/"><img width="292" height="300" class="alignnone wp-image-675 size-medium" alt="tenantrestriction3a" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestriction3a-292x300.png" /></a></p>
+<p>テナント管理者は Azure ポータルで、</p>
+<p>[Azure Active Directory] – [概要] – [その他の機能] – [テナントの制限]</p>
+<p>から、ログ レポートにアクセスできます。<br />
+このレポートを使用して、ブロックされたサインイン ログを確認することが出来ますので、社内で許可されたテナント以外へアクセスが試行されているか否かをチェックできます。</p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestriction4a/"><img width="552" height="600" class="alignnone wp-image-685" alt="tenantrestriction4a" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestriction4a-276x300.png" /></a></p>
+<p><a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/02/06/tenant-restrictions/tenantrestriction5a/"><img width="1024" height="626" class="alignnone wp-image-695 size-large" alt="tenantrestriction5a" src="https://msdnshared.blob.core.windows.net/media/2017/02/TenantRestriction5a-1024x626.png" /></a></p>
+<p><strong>※ 注意 ※</strong><br />
+本ログ レポート機能をご利用になるためには、Azure AD Premium P1 のライセンスが必要となります。</p>
+<p>&nbsp;</p>
+<p>テナントの制限機能の詳細情報はこちらを参照ください。</p>
+<p>Title: テナント制限を使用して SaaS クラウド アプリケーションへのアクセスを管理する<br />
+URL: <a href="https://docs.microsoft.com/ja-jp/azure/active-directory/active-directory-tenant-restrictions">https://docs.microsoft.com/ja-jp/azure/active-directory/active-directory-tenant-restrictions</a></p>
+<p>Modern Authentication (先進認証/ADAL) の有効化はこちらを参照ください。</p>
+<p>Exchange Online、Skype for Business Online、及び Office 2013 では、ADAL は既定で無効化されていますので、有効化設定をお願いします。</p>
+<p>Title: Exchange Online の先進認証を有効にする<br />
+URL:  <a href="https://support.office.com/ja-jp/article/58018196-f918-49cd-8238-56f57f38d662">https://support.office.com/ja-jp/article/58018196-f918-49cd-8238-56f57f38d662</a></p>
+<p>Title:  Skype for Business Online: Enable your tenant for modern authentication<br />
+URL: <a href="https://social.technet.microsoft.com/wiki/contents/articles/34339.skype-for-business-online-enable-your-tenant-for-modern-authentication.aspx">https://social.technet.microsoft.com/wiki/contents/articles/34339.skype-for-business-online-enable-your-tenant-for-modern-authentication.aspx</a></p>
+<p>Title: Windows デバイスの Office 2013 の先進認証を有効にする<br />
+URL: <a href="https://support.office.com/ja-jp/article/7dc1c01a-090f-4971-9677-f1b192d6c910">https://support.office.com/ja-jp/article/7dc1c01a-090f-4971-9677-f1b192d6c910</a></p>
+<p>&nbsp;</p>
+<p>なお、現時点では完全なテナントの制限を実現できない点にもご注意ください。テナントの制限を実現するためには、Modern Authentication (先進認証/ADAL) が使用されていることが前提となります。つまり、ブラウザー ベースのアプリケーションでは本機能は完全に機能しますが、レガシー認証を使用するクライアント (Outlook、Skype for Business など) ではこの認証・認可フェーズを迂回するため、テナントの制限を強制することが出来ません。</p>
+<p>従いまして、Office 2013 ・ Office 2016 については確実に ADAL が有効化されるようにグループ ポリシーを適用したり、インベントリで Office 2010 以前の旧バージョンが組織内に存在しないことを管理・徹底した上で、Outlook の場合は、グループ ポリシーで既定以外の Exchange アカウントの追加を禁止するなどの対処をご検討ください。Skype for Business や Windows プラットフォーム以外の Outlook 等については、今後、Modern Authentication がサービス全体で既定で有効になる際に、完全にサポートされる予定です。</p>
+<p>&nbsp;</p>
+<p><strong>続編はこちら</strong></p>
+<p>Title: Outlook のレガシー認証ブロック (テナント制限に関連する ADAL 認証の強制)<br />
+URL: <a href="https://blogs.technet.microsoft.com/office365-tech-japan/2017/09/26/block_legacy_auth_with_tenant_restriction/">https://blogs.technet.microsoft.com/office365-tech-japan/2017/09/26/block_legacy_auth_with_tenant_restriction/</a></p>
+]]></content:encoded>
+			</item>
+	</channel>
+</rss>
