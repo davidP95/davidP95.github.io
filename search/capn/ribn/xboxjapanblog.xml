@@ -8,7 +8,7 @@
 	>
 
 <channel>
-	<title>Xbox Japan Blog</title>
+	<title>Game Japan Blog</title>
 	<atom:link href="https://blogs.technet.microsoft.com/xboxjapanblog/feed/" rel="self" type="application/rss+xml" />
 	<link>https://blogs.technet.microsoft.com/xboxjapanblog</link>
 	<description>Xbox の最新情報をお届けします</description>
